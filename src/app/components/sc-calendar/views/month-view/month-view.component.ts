@@ -26,7 +26,6 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.options && !changes.options.firstChange) {
       this.init();
     }
@@ -76,5 +75,13 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       res[Math.floor(i / 7)].push(monthDays[i]);
     }
     return res;
+  }
+
+  isToday(date) {
+    return moment().isSame(date, 'day');
+  }
+
+  dayRender(event) {    
+    this.options.dayRender(event.date, event.cell);
   }
 }

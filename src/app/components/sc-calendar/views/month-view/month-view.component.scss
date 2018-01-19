@@ -28,6 +28,9 @@
           font-weight: 100;
           z-index: 1;
         }
+        &.today {
+          background-color: #fcf8e3;
+        }
       }
     }
   }

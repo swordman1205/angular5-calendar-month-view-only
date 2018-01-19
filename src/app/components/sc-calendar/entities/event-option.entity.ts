@@ -7,7 +7,8 @@ export class EventOptionEntity {
   dayNames?: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   dayNamesShort?: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   defaultView?: string = 'month';
-  defaultDate?: any = moment();
+  defaultDate?: string = moment().format('YYYY-MM-DD');
   titleFormat?: string = 'MMMM YYYY';
   events?: EventEntity[] = [];
+  dayRender?: (date, cell) => void;
 }

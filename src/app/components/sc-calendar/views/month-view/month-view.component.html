@@ -4,7 +4,12 @@
   </div>
   <div class="days" fxLayout="column">
     <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays" fxLayout="row">
-      <div class="day" *ngFor="let day of days" fxFlex>
+      <div class="day"
+        [dayCell]="day.date"
+        (dayRender)="dayRender($event)"
+        [class.today]="isToday(day.date)"
+        *ngFor="let day of days"
+        fxFlex>
         <span class="date-badge">{{day.date.date()}}</span>
       </div>
     </div>

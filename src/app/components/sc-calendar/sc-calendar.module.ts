@@ -8,7 +8,7 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
-import { SCCalendarMonthViewComponent } from './views';
+import { SCCalendarMonthViewComponent, DayCellDirective } from './views';
 import { SCCalendarHeaderComponent } from './header';
 
 const MaterialModules = [
@@ -21,7 +21,8 @@ const MaterialModules = [
   declarations: [
     SCCalendarComponent,
     SCCalendarMonthViewComponent,
-    SCCalendarHeaderComponent
+    SCCalendarHeaderComponent,
+    DayCellDirective
   ],
   imports: [
     FormsModule,

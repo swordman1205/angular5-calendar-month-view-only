@@ -30,7 +30,7 @@ export class SCCalendarComponent implements OnChanges {
         this.eventOptions = {
           ...this.eventOptions,
           ...{
-            defaultDate: moment(this.eventOptions.defaultDate).subtract(1, 'day')
+            defaultDate: moment(this.eventOptions.defaultDate).subtract(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD')
           }
         };
         break;
@@ -38,7 +38,7 @@ export class SCCalendarComponent implements OnChanges {
         this.eventOptions = {
           ...this.eventOptions,
           ...{
-            defaultDate: moment(this.eventOptions.defaultDate).add(1, 'day')
+            defaultDate: moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD')
           }
         };
         break;
@@ -46,7 +46,7 @@ export class SCCalendarComponent implements OnChanges {
         this.eventOptions = {
           ...this.eventOptions,
           ...{
-            defaultDate: moment()
+            defaultDate: moment().format('YYYY-MM-DD')
           }
         };
         break;
