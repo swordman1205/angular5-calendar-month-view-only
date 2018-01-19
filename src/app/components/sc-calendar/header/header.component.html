@@ -1,0 +1,15 @@
+<div class="header-bar" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="navigators">
+    <mat-button-toggle-group>
+      <mat-button-toggle (click)="dateChanged.next('prev')">
+        <mat-icon>navigate_before</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle (click)="dateChanged.next('next')">
+        <mat-icon>navigate_next</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-raised-button color="primary" (click)="dateChanged.next('today')">Today</button>
+  </div>
+  <h2 class="title">{{title}}</h2>
+  <div></div>
+</div>

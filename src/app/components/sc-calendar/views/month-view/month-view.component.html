@@ -1,0 +1,12 @@
+<div class="month" #monthView fxLayout="column">
+  <div class="day-names" fxLayout="row" fxLayout="center center">
+    <div fxFlex *ngFor="let day of options.dayNamesShort">{{day}}</div>
+  </div>
+  <div class="days" fxLayout="column">
+    <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays" fxLayout="row">
+      <div class="day" *ngFor="let day of days" fxFlex>
+        <span class="date-badge">{{day.date.date()}}</span>
+      </div>
+    </div>
+  </div>
+</div>

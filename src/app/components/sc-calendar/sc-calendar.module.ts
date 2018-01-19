@@ -8,6 +8,8 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
+import { SCCalendarMonthViewComponent } from './views';
+import { SCCalendarHeaderComponent } from './header';
 
 const MaterialModules = [
   MatButtonModule,
@@ -17,7 +19,9 @@ const MaterialModules = [
 
 @NgModule({
   declarations: [
-    SCCalendarComponent
+    SCCalendarComponent,
+    SCCalendarMonthViewComponent,
+    SCCalendarHeaderComponent
   ],
   imports: [
     FormsModule,

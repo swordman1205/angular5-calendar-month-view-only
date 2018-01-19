@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EventOptionEntity } from './components/sc-calendar';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  options: EventOptionEntity = {
+    titleFormat: 'MMMM D YYYY'
+  };
 }

@@ -8,5 +8,6 @@ export class EventOptionEntity {
   dayNamesShort?: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   defaultView?: string = 'month';
   defaultDate?: any = moment();
+  titleFormat?: string = 'MMMM YYYY';
   events?: EventEntity[] = [];
 }
