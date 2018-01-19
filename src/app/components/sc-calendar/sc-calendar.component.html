@@ -1,0 +1,33 @@
+<div class="calendar-container" #calendar fxLayout="column">
+  <div class="header-bar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="navigators">
+      <mat-button-toggle-group>
+        <mat-button-toggle value="before">
+          <mat-icon>navigate_before</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="after">
+          <mat-icon>navigate_next</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <button mat-raised-button color="primary">Today</button>
+    </div>
+    <h2 class="title">January 2018</h2>
+    <div></div>
+  </div>
+  <div class="content" [ngSwitch]="options.defaultView">
+    <ng-container *ngSwitchCase="'month'">
+      <div class="month" fxLayout="column">
+        <div class="day-names" fxLayout="row" fxLayout="center center">
+          <div fxFlex *ngFor="let day of options.dayNamesShort">{{day}}</div>
+        </div>
+        <div class="days" fxLayout="column">
+          <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays" fxLayout="row">
+            <div class="day" *ngFor="let day of days" fxFlex>
+              <span class="date-badge">{{day.date.date()}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
