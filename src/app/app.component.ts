@@ -10,7 +10,10 @@ export class AppComponent {
   options: EventOptionEntity = {
     defaultDate: '2017-12-12',
     dayRender: (date, cell) => {
-      // put some logic here for coloring the day cells
+      // put some logic here for styling the day cells
+    },
+    eventRender: (event, element) => {
+      // put some logic here for styling event chips
     },
     events: [
       {

@@ -40,7 +40,10 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     if (this.monthDays) {
       for (let i = 0; i < this.monthDays.length; i++) {
         const row = this.getRenderedEvents(this.monthDays[i][0].date, this.monthDays[i][6].date);
-        this.rowData.push(row);
+        this.rowData.push({
+          content: row,
+          height: this.positions[0].length
+        });
         this.initPositions();
       }
     }
@@ -119,54 +122,57 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
           event.left = event.startedAt.diff(startDate, 'days');
           event.isMore = false;
         }
-        tempEvents.push(event);
+        tempEvents.push({
+          raw: this.options.events[i],
+          data: event
+        });
       }
     }
     tempEvents.sort((a, b) => {
-      if (a.startedAt.isBefore(b.startedAt)) return -1;
-      if (a.startedAt.isAfter(b.startedAt)) return 1;
-      if (a.days > b.days) return -1;
-      if (a.days < b.days) return 1;
+      if (a.data.startedAt.isBefore(b.data.startedAt)) return -1;
+      if (a.data.startedAt.isAfter(b.data.startedAt)) return 1;
+      if (a.data.days > b.data.days) return -1;
+      if (a.data.days < b.data.days) return 1;
       return 0;
     });
     for (let i = 0; i < tempEvents.length; i++) {
       const empties = [];
-      for (let j = 0; j < this.positions[tempEvents[i].left].length; j++) {
-        if (this.positions[tempEvents[i].left][j] === -1)
+      for (let j = 0; j < this.positions[tempEvents[i].data.left].length; j++) {
+        if (this.positions[tempEvents[i].data.left][j] === -1)
           empties.push(j);
       }
       if (empties.length === 0) {
         for (let j = 0; j < this.positions.length; j++) {
-          if (j >= tempEvents[i].left && j < tempEvents[i].left + tempEvents[i].duration)
+          if (j >= tempEvents[i].data.left && j < tempEvents[i].data.left + tempEvents[i].data.duration)
             this.positions[j].push(i);
           else
             this.positions[j].push(-1);
         }
-        tempEvents[i].top = this.positions[0].length - 1;
+        tempEvents[i].data.top = this.positions[0].length - 1;
       } else {
         for (let j = 0; j < empties.length; j++) {
           let flag = 0;
-          for (let k = tempEvents[i].left + 1; k < tempEvents[i].left + tempEvents[i].duration; k++) {
+          for (let k = tempEvents[i].data.left + 1; k < tempEvents[i].data.left + tempEvents[i].data.duration; k++) {
             if (this.positions[k][empties[j]] !== -1) {
               flag = -1;
               break;
             }
           }
           if (flag !== -1) {
-            for (let k = tempEvents[i].left; k < tempEvents[i].left + tempEvents[i].duration; k++) {
+            for (let k = tempEvents[i].data.left; k < tempEvents[i].data.left + tempEvents[i].data.duration; k++) {
               this.positions[k][empties[j]] = i;
             }
-            tempEvents[i].top = empties[j];
+            tempEvents[i].data.top = empties[j];
             break;
           } else {
             if (j === empties.length - 1) {
               for (let k = 0; k < this.positions.length; k++) {
-                if (k >= tempEvents[i].left && k < tempEvents[i].left + tempEvents[i].duration)
+                if (k >= tempEvents[i].data.left && k < tempEvents[i].data.left + tempEvents[i].data.duration)
                   this.positions[k].push(i);
                 else
                   this.positions[k].push(-1);
               }
-              tempEvents[i].top = this.positions[0].length - 1;
+              tempEvents[i].data.top = this.positions[0].length - 1;
               break;
             } else {
               continue;
@@ -182,7 +188,11 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     return moment().isSame(date, 'day');
   }
 
-  dayRender(event) {    
-    this.options.dayRender(event.date, event.cell);
+  dayRender(day) {    
+    this.options.dayRender(day.date, day.cell);
+  }
+
+  eventRender(data) {
+    this.options.eventRender(data.event, data.element);
   }
 }

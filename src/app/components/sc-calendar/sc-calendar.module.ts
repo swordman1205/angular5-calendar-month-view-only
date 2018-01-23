@@ -9,7 +9,7 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
-import { SCCalendarMonthViewComponent, DayCellDirective } from './views';
+import { SCCalendarMonthViewComponent, DayCellDirective, SCCalendarEventChipComponent } from './views';
 import { SCCalendarHeaderComponent } from './header';
 
 const MaterialModules = [
@@ -24,6 +24,7 @@ const MaterialModules = [
     SCCalendarComponent,
     SCCalendarMonthViewComponent,
     SCCalendarHeaderComponent,
+    SCCalendarEventChipComponent,
     DayCellDirective
   ],
   imports: [

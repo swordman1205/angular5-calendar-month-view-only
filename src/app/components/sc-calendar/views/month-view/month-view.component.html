@@ -3,15 +3,22 @@
     <div fxFlex *ngFor="let day of options.dayNamesShort">{{day}}</div>
   </div>
   <div class="days" fxLayout="column">
-    <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays; let i = index" fxLayout="row">
+    <div 
+      class="day-row"
+      [style.minHeight]="cellHeight + 'px'"
+      [style.height]="rowData[i].height * 22 + 25 + 'px'"
+      *ngFor="let days of monthDays; let i = index"
+      fxLayout="row">
       <div class="row-content">
         <div 
           class="event"
-          [style.width]="14.28 * event.duration + '%'"
-          [style.left]="14.28 * event.left + '%'"
-          [style.top]="22 * event.top + 'px'"
-          *ngFor="let event of rowData[i]">
-          <mat-card class="content">{{event.title}}</mat-card>
+          [style.width]="14.28 * event.data.duration + '%'"
+          [style.left]="14.28 * event.data.left + '%'"
+          [style.top]="22 * event.data.top + 'px'"
+          *ngFor="let event of rowData[i].content">
+          <sc-calendar-event-chip 
+            [data]="event"
+            (eventShown)="eventRender($event)"></sc-calendar-event-chip>
         </div>
       </div>
       <div class="day"

@@ -11,4 +11,5 @@ export class EventOptionEntity {
   titleFormat?: string = 'MMMM YYYY';
   events?: EventEntity[] = [];
   dayRender?: (date, cell) => void;
+  eventRender?: (event, element) => void;
 }
