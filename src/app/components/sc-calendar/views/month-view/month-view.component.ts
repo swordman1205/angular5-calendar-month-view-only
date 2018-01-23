@@ -19,7 +19,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   monthDays:any;
   cellHeight: number = 0;
   positions:any;
-  rowData:any = [];
+  rowData:any;
 
   constructor() {}
 
@@ -36,6 +36,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   private init() {
     this.initPositions();
+    this.rowData = [];
     this.monthDays = this.getMonthDays(this.options.defaultDate);
     if (this.monthDays) {
       for (let i = 0; i < this.monthDays.length; i++) {
