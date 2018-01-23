@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule,
   MatIconModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatCardModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
@@ -14,7 +15,8 @@ import { SCCalendarHeaderComponent } from './header';
 const MaterialModules = [
   MatButtonModule,
   MatIconModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatCardModule
 ];
 
 @NgModule({

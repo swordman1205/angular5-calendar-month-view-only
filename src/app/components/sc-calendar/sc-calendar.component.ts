@@ -37,7 +37,7 @@ export class SCCalendarComponent implements OnChanges {
       case 'next':
         this.eventOptions = {
           ...this.eventOptions,
-          ...{
+          ...{ 
             defaultDate: moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD')
           }
         };

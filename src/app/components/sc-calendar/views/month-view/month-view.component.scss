@@ -14,6 +14,31 @@
     border-bottom: 1px solid #efefef;
     .day-row {
       position: relative;
+      .row-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 25px;
+        bottom: 0;
+        z-index: 2;
+        .event {
+          position: absolute;
+          height: 20px;
+          padding-right: 2px;
+          box-sizing: border-box;
+          line-height: 20px;
+          .content {
+            padding: 0;
+            background-color: #3f51b5;
+            color: #fff;
+            height: 100%;
+            font-size: 12px;
+            padding-left: 5px;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+          }
+        }
+      }
       .day {
         border: 1px solid #efefef;
         border-right: 0;

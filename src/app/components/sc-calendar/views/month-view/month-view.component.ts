@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
-import { EventOptionEntity } from '../../entities';
+import { EventOptionEntity, EventEntity } from '../../entities';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sc-calendar-month-view',
@@ -17,12 +18,14 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   monthDays:any;
   cellHeight: number = 0;
+  positions:any;
+  rowData:any = [];
 
   constructor() {}
 
   ngOnInit() {
-    this.init();
     this.updateCellHeight();
+    this.init();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -32,7 +35,22 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   }
 
   private init() {
-    this.monthDays = this.getMonthDays(this.options.defaultDate);    
+    this.initPositions();
+    this.monthDays = this.getMonthDays(this.options.defaultDate);
+    if (this.monthDays) {
+      for (let i = 0; i < this.monthDays.length; i++) {
+        const row = this.getRenderedEvents(this.monthDays[i][0].date, this.monthDays[i][6].date);
+        this.rowData.push(row);
+        this.initPositions();
+      }
+    }
+  }
+
+  private initPositions() {
+    this.positions = [];
+    for (let i = 0; i < 7; i++) {
+      this.positions.push([]);
+    }
   }
 
   private updateCellHeight() {
@@ -75,6 +93,89 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       res[Math.floor(i / 7)].push(monthDays[i]);
     }
     return res;
+  }
+
+  private getRenderedEvents(startDate, endDate) {
+    const tempEvents = [];
+    if (!this.options.events) return tempEvents;
+    for (let i = 0; i < this.options.events.length; i++) {
+      const startAt = moment(this.options.events[i].start),
+            endAt = this.options.events[i].end? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
+      if ((startAt.isSameOrAfter(startDate, 'day') && startAt.isSameOrBefore(endDate, 'day')) || (startAt.isBefore(startDate) && endAt.isSameOrAfter(startDate))) {
+        const event = _.cloneDeep(this.options.events[i]);
+        event.startedAt = startAt;
+        event.endedAt = endAt;
+        event.days = event.endedAt.diff(event.startedAt, 'days') + 1;
+        const isBeyondStart = event.startedAt.isBefore(startDate, 'day');
+        const isBeyondEnd = event.endedAt.isAfter(endDate, 'day');
+        if (isBeyondStart || isBeyondEnd) {
+          const start = isBeyondStart? startDate : event.startedAt;
+          const end = isBeyondEnd? endDate : event.endedAt;
+          event.duration = end.diff(start, 'days') + 1;
+          event.left = start.diff(startDate, 'days');
+          event.isMore = isBeyondEnd;
+        } else {
+          event.duration = event.days;
+          event.left = event.startedAt.diff(startDate, 'days');
+          event.isMore = false;
+        }
+        tempEvents.push(event);
+      }
+    }
+    tempEvents.sort((a, b) => {
+      if (a.startedAt.isBefore(b.startedAt)) return -1;
+      if (a.startedAt.isAfter(b.startedAt)) return 1;
+      if (a.days > b.days) return -1;
+      if (a.days < b.days) return 1;
+      return 0;
+    });
+    for (let i = 0; i < tempEvents.length; i++) {
+      const empties = [];
+      for (let j = 0; j < this.positions[tempEvents[i].left].length; j++) {
+        if (this.positions[tempEvents[i].left][j] === -1)
+          empties.push(j);
+      }
+      if (empties.length === 0) {
+        for (let j = 0; j < this.positions.length; j++) {
+          if (j >= tempEvents[i].left && j < tempEvents[i].left + tempEvents[i].duration)
+            this.positions[j].push(i);
+          else
+            this.positions[j].push(-1);
+        }
+        tempEvents[i].top = this.positions[0].length - 1;
+      } else {
+        for (let j = 0; j < empties.length; j++) {
+          let flag = 0;
+          for (let k = tempEvents[i].left + 1; k < tempEvents[i].left + tempEvents[i].duration; k++) {
+            if (this.positions[k][empties[j]] !== -1) {
+              flag = -1;
+              break;
+            }
+          }
+          if (flag !== -1) {
+            for (let k = tempEvents[i].left; k < tempEvents[i].left + tempEvents[i].duration; k++) {
+              this.positions[k][empties[j]] = i;
+            }
+            tempEvents[i].top = empties[j];
+            break;
+          } else {
+            if (j === empties.length - 1) {
+              for (let k = 0; k < this.positions.length; k++) {
+                if (k >= tempEvents[i].left && k < tempEvents[i].left + tempEvents[i].duration)
+                  this.positions[k].push(i);
+                else
+                  this.positions[k].push(-1);
+              }
+              tempEvents[i].top = this.positions[0].length - 1;
+              break;
+            } else {
+              continue;
+            }
+          }
+        }
+      }
+    }
+    return tempEvents;
   }
 
   isToday(date) {

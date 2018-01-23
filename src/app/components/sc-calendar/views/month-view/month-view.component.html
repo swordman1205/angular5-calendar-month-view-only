@@ -3,7 +3,17 @@
     <div fxFlex *ngFor="let day of options.dayNamesShort">{{day}}</div>
   </div>
   <div class="days" fxLayout="column">
-    <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays" fxLayout="row">
+    <div class="day-row" [style.height]="cellHeight + 'px'" *ngFor="let days of monthDays; let i = index" fxLayout="row">
+      <div class="row-content">
+        <div 
+          class="event"
+          [style.width]="14.28 * event.duration + '%'"
+          [style.left]="14.28 * event.left + '%'"
+          [style.top]="22 * event.top + 'px'"
+          *ngFor="let event of rowData[i]">
+          <mat-card class="content">{{event.title}}</mat-card>
+        </div>
+      </div>
       <div class="day"
         [dayCell]="day.date"
         (dayRender)="dayRender($event)"
