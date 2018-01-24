@@ -41,6 +41,9 @@
           font-size: 14px;
           font-weight: 100;
           z-index: 1;
+          &.inactive {
+            color: #ccc;
+          }
         }
         &.today {
           background-color: #fcf8e3;
