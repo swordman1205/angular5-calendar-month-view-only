@@ -5,18 +5,22 @@ import {
   MatButtonModule,
   MatIconModule,
   MatButtonToggleModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuModule,
+  MatListModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
-import { SCCalendarMonthViewComponent, DayCellDirective, SCCalendarEventChipComponent } from './views';
+import { SCCalendarMonthViewComponent, SCCalendarEventChipComponent, DayCellDirective, ContextMenuTriggerDirective } from './views';
 import { SCCalendarHeaderComponent } from './header';
 
 const MaterialModules = [
   MatButtonModule,
   MatIconModule,
   MatButtonToggleModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuModule,
+  MatListModule
 ];
 
 @NgModule({
@@ -25,7 +29,8 @@ const MaterialModules = [
     SCCalendarMonthViewComponent,
     SCCalendarHeaderComponent,
     SCCalendarEventChipComponent,
-    DayCellDirective
+    DayCellDirective,
+    ContextMenuTriggerDirective
   ],
   imports: [
     FormsModule,

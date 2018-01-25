@@ -18,6 +18,7 @@
           *ngFor="let event of rowData[i].content">
           <sc-calendar-event-chip 
             [data]="event"
+            [contextMenu]="contextMenu"
             (eventShown)="eventRender($event)"></sc-calendar-event-chip>
         </div>
       </div>
@@ -32,3 +33,18 @@
     </div>
   </div>
 </div>
+<mat-menu #contextMenu="matMenu">
+  <button mat-menu-item><mat-icon>open_in_new</mat-icon>Open</button>
+  <button mat-menu-item><mat-icon>content_copy</mat-icon>Copy</button>
+  <button mat-menu-item><mat-icon>mode_edit</mat-icon>Edit</button>
+  <button mat-menu-item [matMenuTriggerFor]="statusMenu"><mat-icon>mode_edit</mat-icon>Status</button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
+</mat-menu>
+<mat-menu #statusMenu="matMenu">
+  <button mat-menu-item>Default</button>
+  <button mat-menu-item>Completed</button>
+  <button mat-menu-item>Invoiced</button>
+  <button mat-menu-item>Paid</button>
+  <button mat-menu-item>Cancelled</button>
+</mat-menu>

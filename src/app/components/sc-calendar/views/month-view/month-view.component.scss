@@ -1,17 +1,21 @@
+$cell__border-color: #efefef;
+$grey__text-color: #ccc;
+$today__background-color: #fcf8e3;
+
 .month {
   .day-names {
-    border-right: 1px solid #efefef;
+    border-right: 1px solid $cell__border-color;
     > div {
       text-align: center;
-      border: 1px solid #efefef;
+      border: 1px solid $cell__border-color;
       border-right: 0;
       border-bottom: 0;
       padding: 10px 0;
     }
   }
   .days {
-    border-right: 1px solid #efefef;
-    border-bottom: 1px solid #efefef;
+    border-right: 1px solid $cell__border-color;
+    border-bottom: 1px solid $cell__border-color;
     .day-row {
       position: relative;
       .row-content {
@@ -29,7 +33,7 @@
         }
       }
       .day {
-        border: 1px solid #efefef;
+        border: 1px solid $cell__border-color;
         border-right: 0;
         border-bottom: 0;
         position: relative;
@@ -42,11 +46,11 @@
           font-weight: 100;
           z-index: 1;
           &.inactive {
-            color: #ccc;
+            color: $grey__text-color;
           }
         }
         &.today {
-          background-color: #fcf8e3;
+          background-color: $today__background-color;
         }
       }
     }

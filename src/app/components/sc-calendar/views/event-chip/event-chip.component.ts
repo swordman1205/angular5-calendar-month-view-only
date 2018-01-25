@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@angular/core';
+import { MatMenu } from '@angular/material';
 
 @Component({
   selector: 'sc-calendar-event-chip',
@@ -7,6 +8,7 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@ang
 })
 export class SCCalendarEventChipComponent implements OnInit {
   @Input('data') event: any;
+  @Input() contextMenu: MatMenu;
   @Output('eventShown') eventShown: EventEmitter<any> = new EventEmitter();
 
   constructor(private $el: ElementRef) {}

@@ -2,7 +2,8 @@
   <mat-card 
     class="inner-data" 
     [class.is-more]="event.data.isMore" 
-    [style.backgroundColor]="event.data.backgroundColor">
+    [style.backgroundColor]="event.data.backgroundColor"    
+    [contextMenuTrigger]="contextMenu">
     {{event.data.title}}
   </mat-card>
   <mat-card class="popover">

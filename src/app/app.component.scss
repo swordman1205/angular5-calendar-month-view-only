@@ -1,0 +1,17 @@
+.mat-menu-panel {
+  button.mat-menu-item {
+    font-size: 13px;
+    letter-spacing: 0.8px;
+    height: 35px;
+    line-height: 35px;
+    mat-icon {
+      font-size: 22px;
+    }
+  }
+  .mat-divider {
+    display: block;
+    margin: 0;
+    border-top-width: 1px;
+    border-top-style: solid;
+  }
+}

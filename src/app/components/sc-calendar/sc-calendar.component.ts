@@ -1,11 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { EventOptionEntity } from './entities';
 import * as moment from 'moment';
 
 @Component({
   selector: 'sc-calendar',
   templateUrl: './sc-calendar.component.html',
-  styleUrls: ['./sc-calendar.component.scss']
+  styleUrls: ['./sc-calendar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SCCalendarComponent implements OnChanges {
   @Input() options: EventOptionEntity;
