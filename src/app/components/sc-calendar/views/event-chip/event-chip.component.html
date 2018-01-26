@@ -1,20 +1,14 @@
-<div class="event-content">
-  <mat-card 
-    class="inner-data" 
-    [class.is-more]="event.data.isMore" 
-    [style.backgroundColor]="event.data.backgroundColor"    
-    [contextMenuTrigger]="contextMenu">
-    {{event.data.title}}
-  </mat-card>
-  <mat-card class="popover">
-    <mat-card-title>{{event.data.title}}</mat-card-title>
-    <mat-card-content>
-      <h4 class="name"><strong>Date</strong></h4>
-      <p class="value">{{event.data.startedAt.format('ddd, MMMM DD, YYYY')}}</p>
-      <ng-container *ngIf="event.data.startedAt.hours() || event.data.startedAt.minutes()">
-        <h4 class="name"><strong>Time</strong></h4>
-        <p class="value">{{ event.data.startedAt.format('h:mm a') + (event.raw.end? ' - ' + event.data.endedAt.format('h:mm a') : '') }}</p>
-      </ng-container>
-    </mat-card-content>
-  </mat-card>
-</div>
+<mat-card 
+  class="inner-data" 
+  [class.is-more]="event.data.isMore" 
+  [style.backgroundColor]="event.data.backgroundColor"    
+  [popover]="hoverPopup"
+  [popoverOnHover]="true"
+  [popoverCloseOnMouseOutside]="true"
+  (onShown)="popupShown()">
+  <div
+    class="context-menu-trigger"
+    [contextMenuTrigger]="contextMenu"
+    (onContextMenuShown)="onContextMenuShown()"></div>
+  {{event.data.title}}
+</mat-card>

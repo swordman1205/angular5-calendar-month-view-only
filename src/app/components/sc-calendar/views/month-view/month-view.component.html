@@ -18,8 +18,11 @@
           *ngFor="let event of rowData[i].content">
           <sc-calendar-event-chip 
             [data]="event"
+            (eventShown)="eventRender($event)"
             [contextMenu]="contextMenu"
-            (eventShown)="eventRender($event)"></sc-calendar-event-chip>
+            (onMenuShown)="onMenuShown($event)"
+            [hoverPopup]="hoverPopup"
+            (onPopupShown)="onPopupShown($event)"></sc-calendar-event-chip>
         </div>
       </div>
       <div class="day"
@@ -33,6 +36,19 @@
     </div>
   </div>
 </div>
+<popover-content #hoverPopup placement="auto" [closeOnMouseOutside]="true">
+  <mat-card class="hover-popup">
+    <mat-card-title>{{hoverPopupEvent?.data?.title}}</mat-card-title>
+    <mat-card-content>
+      <h4 class="name"><strong>Date</strong></h4>
+      <p class="value">{{hoverPopupEvent?.data?.startedAt?.format('ddd, MMMM DD, YYYY')}}</p>
+      <ng-container *ngIf="hoverPopupEvent?.data?.startedAt?.hours() || hoverPopupEvent?.data?.startedAt?.minutes()">
+        <h4 class="name"><strong>Time</strong></h4>
+        <p class="value">{{ hoverPopupEvent?.data?.startedAt?.format('h:mm a') + (hoverPopupEvent?.raw?.end? ' - ' + hoverPopupEvent?.data?.endedAt?.format('h:mm a') : '') }}</p>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</popover-content>
 <mat-menu #contextMenu="matMenu">
   <button mat-menu-item><mat-icon>open_in_new</mat-icon>Open</button>
   <button mat-menu-item><mat-icon>content_copy</mat-icon>Copy</button>

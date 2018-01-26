@@ -14,6 +14,8 @@ import { SCCalendarComponent } from './sc-calendar.component';
 import { SCCalendarMonthViewComponent, SCCalendarEventChipComponent, DayCellDirective, ContextMenuTriggerDirective } from './views';
 import { SCCalendarHeaderComponent } from './header';
 
+import { PopoverModule } from './popover';
+
 const MaterialModules = [
   MatButtonModule,
   MatIconModule,
@@ -37,6 +39,7 @@ const MaterialModules = [
     CommonModule,
     ...MaterialModules,
     FlexLayoutModule,
+    PopoverModule
   ],
   providers: [],
   exports: [

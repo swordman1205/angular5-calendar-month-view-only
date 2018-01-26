@@ -9,7 +9,10 @@ import { MatMenu } from '@angular/material';
 export class SCCalendarEventChipComponent implements OnInit {
   @Input('data') event: any;
   @Input() contextMenu: MatMenu;
-  @Output('eventShown') eventShown: EventEmitter<any> = new EventEmitter();
+  @Input() hoverPopup: any;
+  @Output() eventShown: EventEmitter<any> = new EventEmitter();
+  @Output() onPopupShown: EventEmitter<any> = new EventEmitter();
+  @Output() onMenuShown: EventEmitter<any> = new EventEmitter();
 
   constructor(private $el: ElementRef) {}
 
@@ -18,5 +21,13 @@ export class SCCalendarEventChipComponent implements OnInit {
       event: this.event.raw,
       element: this.$el.nativeElement
     });
+  }
+
+  popupShown() {
+    this.onPopupShown.emit(this.event);
+  }
+
+  onContextMenuShown() {
+    this.onMenuShown.emit(this.event);
   }
 }

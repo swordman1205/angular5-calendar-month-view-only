@@ -21,6 +21,9 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   positions:any;
   rowData:any;
 
+  hoverPopupEvent: any;
+  menuEvent: any;
+
   constructor() {}
 
   ngOnInit() {
@@ -195,5 +198,13 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   eventRender(data) {
     this.options.eventRender(data.event, data.element);
+  }
+
+  onPopupShown(event) {
+    this.hoverPopupEvent = event;
+  }
+
+  onMenuShown(event) {
+    this.menuEvent = event;
   }
 }
