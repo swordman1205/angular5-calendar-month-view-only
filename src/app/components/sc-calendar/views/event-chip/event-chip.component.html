@@ -1,6 +1,7 @@
 <mat-card 
   class="inner-data" 
-  [class.is-more]="event.data.isMore" 
+  [class.is-more]="event.data.isMore"
+  [class.has-icon]="!event.data.isMore && event.data.icon"
   [style.backgroundColor]="event.data.backgroundColor"    
   [popover]="hoverPopup"
   [popoverOnHover]="true"
@@ -11,4 +12,5 @@
     [contextMenuTrigger]="contextMenu"
     (onContextMenuShown)="onContextMenuShown()"></div>
   {{event.data.title}}
+  <mat-icon>{{event.data.icon}}</mat-icon>
 </mat-card>

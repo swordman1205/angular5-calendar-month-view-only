@@ -24,7 +24,8 @@ export class AppComponent {
         title: 'Long Event',
         start: '2017-12-07',
         end: '2017-12-10',
-        backgroundColor: '#ff4081'
+        backgroundColor: '#ff4081',
+        icon: 'warning'
       },
       {
         title: 'Repeating Event',

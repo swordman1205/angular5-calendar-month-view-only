@@ -1,6 +1,7 @@
 export class EventEntity {
   id?: string | number;
   title: string;
+  icon?: string;
   allDay?: boolean;
   start: string;
   end?: string;

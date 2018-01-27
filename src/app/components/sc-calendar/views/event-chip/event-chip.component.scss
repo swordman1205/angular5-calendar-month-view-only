@@ -25,6 +25,19 @@ $white-color: #ffffff;
       transform: rotate(45deg);
     }
   }
+  &.has-icon {
+    padding-right: 28px;
+    mat-icon {
+      display: block;
+      position: absolute;
+      right: 0px;
+      top: 1px;
+      font-size: 18px;
+    }
+  }
+  mat-icon {
+    display: none;
+  }
   .context-menu-trigger {
     position: absolute;
     top: 0;
