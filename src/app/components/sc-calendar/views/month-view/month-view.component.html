@@ -17,6 +17,7 @@
           [style.top]="22 * event.data.top + 'px'"
           *ngFor="let event of rowData[i].content">
           <sc-calendar-event-chip 
+            *ngIf="loaded"
             [data]="event"
             (eventShown)="eventRender($event)"
             [contextMenu]="contextMenu"
@@ -37,30 +38,10 @@
   </div>
 </div>
 <popover-content #hoverPopup placement="auto" [closeOnMouseOutside]="true">
-  <mat-card class="hover-popup">
-    <mat-card-title>{{hoverPopupEvent?.data?.title}}</mat-card-title>
-    <mat-card-content>
-      <h4 class="name"><strong>Date</strong></h4>
-      <p class="value">{{hoverPopupEvent?.data?.startedAt?.format('ddd, MMMM DD, YYYY')}}</p>
-      <ng-container *ngIf="hoverPopupEvent?.data?.startedAt?.hours() || hoverPopupEvent?.data?.startedAt?.minutes()">
-        <h4 class="name"><strong>Time</strong></h4>
-        <p class="value">{{ hoverPopupEvent?.data?.startedAt?.format('h:mm a') + (hoverPopupEvent?.raw?.end? ' - ' + hoverPopupEvent?.data?.endedAt?.format('h:mm a') : '') }}</p>
-      </ng-container>
-    </mat-card-content>
-  </mat-card>
+  <sc-calendar-hover-popup [event]="hoverPopupEvent"></sc-calendar-hover-popup>
 </popover-content>
-<mat-menu #contextMenu="matMenu">
-  <button mat-menu-item><mat-icon>open_in_new</mat-icon>Open</button>
-  <button mat-menu-item><mat-icon>content_copy</mat-icon>Copy</button>
-  <button mat-menu-item><mat-icon>mode_edit</mat-icon>Edit</button>
-  <button mat-menu-item [matMenuTriggerFor]="statusMenu"><mat-icon>mode_edit</mat-icon>Status</button>
-  <mat-divider></mat-divider>
-  <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
-</mat-menu>
-<mat-menu #statusMenu="matMenu">
-  <button mat-menu-item>Default</button>
-  <button mat-menu-item>Completed</button>
-  <button mat-menu-item>Invoiced</button>
-  <button mat-menu-item>Paid</button>
-  <button mat-menu-item>Cancelled</button>
-</mat-menu>
+<sc-calendar-context-menu
+  [event]="menuEvent?.raw"
+  [content]="contextMenuContent"
+  (onLoadMenu)="onLoadMenu($event)">
+</sc-calendar-context-menu>

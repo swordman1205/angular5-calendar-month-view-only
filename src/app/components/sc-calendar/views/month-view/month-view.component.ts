@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
-import { EventOptionEntity, EventEntity } from '../../entities';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges } from '@angular/core';
+import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -10,11 +10,14 @@ import * as _ from 'lodash';
 })
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
+  @Input() contextMenu: ContextMenuItemEntity[] = [];
   @ViewChild('monthView') monthView: any;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.updateCellHeight();
   }
+
+  contextMenuContent: ContextMenuItemEntity[];
 
   monthDays:any;
   cellHeight: number = 0;
@@ -23,6 +26,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   hoverPopupEvent: any;
   menuEvent: any;
+
+  loaded: boolean = false;
 
   constructor() {}
 
@@ -34,6 +39,9 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options && !changes.options.firstChange) {
       this.init();
+    }
+    if (changes.contextMenu) {
+      this.contextMenuContent = changes.contextMenu.currentValue;
     }
   }
 
@@ -206,5 +214,10 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   onMenuShown(event) {
     this.menuEvent = event;
+  }
+
+  onLoadMenu(menu) {
+    this.contextMenu = menu;
+    this.loaded = true; 
   }
 }

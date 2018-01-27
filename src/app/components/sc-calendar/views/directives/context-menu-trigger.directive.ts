@@ -1,11 +1,11 @@
 import { Directive, ElementRef, Input, Output, EventEmitter, HostListener } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger, MatMenu } from '@angular/material';
 
 @Directive({
   selector: '[contextMenuTrigger]'
 })
 export class ContextMenuTriggerDirective extends MatMenuTrigger {
-  @Input('contextMenuTrigger') menu: any;
+  @Input('contextMenuTrigger') menu: MatMenu;
   @Output() onContextMenuShown: EventEmitter<any> = new EventEmitter();
 
   @HostListener('contextmenu', ['$event'])

@@ -1,0 +1,11 @@
+<mat-card class="hover-popup">
+  <mat-card-title>{{event?.data?.title}}</mat-card-title>
+  <mat-card-content>
+    <h4 class="name"><strong>Date</strong></h4>
+    <p class="value">{{event?.data?.startedAt?.format('ddd, MMMM DD, YYYY')}}</p>
+    <ng-container *ngIf="event?.data?.startedAt?.hours() || event?.data?.startedAt?.minutes()">
+      <h4 class="name"><strong>Time</strong></h4>
+      <p class="value">{{ event?.data?.startedAt?.format('h:mm a') + (event?.raw?.end? ' - ' + event?.data?.endedAt?.format('h:mm a') : '') }}</p>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

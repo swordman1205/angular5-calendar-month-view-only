@@ -11,7 +11,14 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SCCalendarComponent } from './sc-calendar.component';
-import { SCCalendarMonthViewComponent, SCCalendarEventChipComponent, DayCellDirective, ContextMenuTriggerDirective } from './views';
+import { 
+  SCCalendarMonthViewComponent, 
+  SCCalendarEventChipComponent, 
+  SCCalendarContextMenuComponent,
+  SCCalendarHoverPopup,
+  DayCellDirective, 
+  ContextMenuTriggerDirective
+} from './views';
 import { SCCalendarHeaderComponent } from './header';
 
 import { PopoverModule } from './popover';
@@ -31,6 +38,8 @@ const MaterialModules = [
     SCCalendarMonthViewComponent,
     SCCalendarHeaderComponent,
     SCCalendarEventChipComponent,
+    SCCalendarContextMenuComponent,
+    SCCalendarHoverPopup,
     DayCellDirective,
     ContextMenuTriggerDirective
   ],

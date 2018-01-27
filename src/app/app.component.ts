@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EventOptionEntity } from './components/sc-calendar';
+import { EventOptionEntity, ContextMenuItemEntity } from './components/sc-calendar';
 
 @Component({
   selector: 'app-root',
@@ -71,4 +71,75 @@ export class AppComponent {
       }
     ]
   };
+
+  contextMenu: ContextMenuItemEntity[] = [
+    {
+      title: 'Open',
+      icon: 'open_in_new',
+      callback: (event) => {
+        // put some logic here
+      }
+    },
+    {
+      title: 'Copy',
+      icon: 'content_copy',
+      callback: (event) => {
+        // put some logic here
+      }
+    },
+    {
+      title: 'Edit',
+      icon: 'mode_edit',
+      callback: (event) => {
+        // put some logic here
+      }
+    },
+    {
+      title: 'Status',
+      icon: 'mode_edit',
+      children: [
+        {
+          title: 'Default',
+          callback: (event) => {
+            // put some logic here
+          }
+        },
+        {
+          title: 'Completed',
+          callback: (event) => {
+            // put some logic here
+          }
+        },
+        {
+          title: 'Invoiced',
+          callback: (event) => {
+            // put some logic here
+          }
+        },
+        {
+          title: 'Paid',
+          callback: (event) => {
+            // put some logic here
+          }
+        },
+        {
+          title: 'Cancelled',
+          callback: (event) => {
+            // put some logic here
+          }
+        }
+      ]
+    },
+    {
+      title: 'Delete',
+      icon: 'delete',
+      callback: (event) => {
+        const index = this.options.events.indexOf(event);
+        if (index > -1) {
+          this.options.events.splice(index, 1);
+        }
+      }
+    }
+  ];
+
 }

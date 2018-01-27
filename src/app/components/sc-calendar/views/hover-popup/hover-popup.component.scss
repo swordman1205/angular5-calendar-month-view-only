@@ -1,0 +1,20 @@
+$primary-color: #3f51b5;
+
+.hover-popup {
+  padding: 10px;
+  /deep/ {
+    mat-card-title {
+      font-size: 18px;
+      margin-bottom: 0;
+      color: $primary-color;
+    }
+    mat-card-content {
+      .name {
+        margin: 10px 0 0;
+      }
+      .value {
+        margin: 0;
+      }
+    }
+  }
+}

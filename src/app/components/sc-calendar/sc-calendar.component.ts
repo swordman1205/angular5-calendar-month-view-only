@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { EventOptionEntity } from './entities';
+import { Component, Input, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
+import { EventOptionEntity, ContextMenuItemEntity } from './entities';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sc-calendar',
@@ -8,17 +9,32 @@ import * as moment from 'moment';
   styleUrls: ['./sc-calendar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SCCalendarComponent implements OnChanges {
+export class SCCalendarComponent implements OnInit, DoCheck {
   @Input() options: EventOptionEntity;
+  @Input() contextMenu: ContextMenuItemEntity[] = [];
   eventOptions: EventOptionEntity = new EventOptionEntity();
+
+  oldOptions: EventOptionEntity;
 
   constructor() {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnInit() {
+    this.oldOptions = _.cloneDeep(this.options);
+
     this.eventOptions = {
       ...this.eventOptions,
       ...this.options
     };
+  }
+
+  ngDoCheck() {
+    if (JSON.stringify(this.options) !== JSON.stringify(this.oldOptions)) {
+      this.oldOptions = _.cloneDeep(this.options);
+      this.eventOptions = {
+        ...this.eventOptions,
+        ...this.options
+      };
+    }
   }
 
   get title() {
@@ -28,28 +44,13 @@ export class SCCalendarComponent implements OnChanges {
   dateChanged(when) {
     switch (when) {
       case 'prev':
-        this.eventOptions = {
-          ...this.eventOptions,
-          ...{
-            defaultDate: moment(this.eventOptions.defaultDate).subtract(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD')
-          }
-        };
+        this.options.defaultDate = moment(this.eventOptions.defaultDate).subtract(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
         break;
       case 'next':
-        this.eventOptions = {
-          ...this.eventOptions,
-          ...{ 
-            defaultDate: moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD')
-          }
-        };
+        this.options.defaultDate = moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
         break;
       case 'today':
-        this.eventOptions = {
-          ...this.eventOptions,
-          ...{
-            defaultDate: moment().format('YYYY-MM-DD')
-          }
-        };
+        this.options.defaultDate = moment().format('YYYY-MM-DD');
         break;
     }
   }

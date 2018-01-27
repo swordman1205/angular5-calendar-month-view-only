@@ -1,4 +1,5 @@
 import { EventEntity } from './event.entity';
+import { Moment } from 'moment';
 import * as moment from 'moment';
 
 export class EventOptionEntity {
@@ -10,6 +11,6 @@ export class EventOptionEntity {
   defaultDate?: string = moment().format('YYYY-MM-DD');
   titleFormat?: string = 'MMMM YYYY';
   events?: EventEntity[] = [];
-  dayRender?: (date, cell) => void;
-  eventRender?: (event, element) => void;
+  dayRender?: (date: Moment, cell: Element) => void;
+  eventRender?: (event: EventEntity, element: Element) => void;
 }

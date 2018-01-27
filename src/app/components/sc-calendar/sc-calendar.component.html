@@ -4,7 +4,9 @@
     (dateChanged)="dateChanged($event)"></sc-calendar-header>
   <div class="content" [ngSwitch]="eventOptions.defaultView">
     <ng-container *ngSwitchCase="'month'">
-      <sc-calendar-month-view [options]="eventOptions"></sc-calendar-month-view>
+      <sc-calendar-month-view 
+        [options]="eventOptions"
+        [contextMenu]="contextMenu"></sc-calendar-month-view>
     </ng-container>
   </div>
 </div>

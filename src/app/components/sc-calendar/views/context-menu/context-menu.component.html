@@ -1,0 +1,36 @@
+<ng-container *ngIf="loaded">
+  <mat-menu #contextMenu="matMenu">
+    <ng-template ngFor let-item let-i="index" [ngForOf]="content">
+      <button mat-menu-item 
+        *ngIf="item.children; else elseBlock" 
+        [matMenuTriggerFor]="menuObj[item.title]">
+        <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+        {{item.title}}
+      </button>
+      <ng-template #elseBlock>
+        <button mat-menu-item (click)="item.callback(event)">
+          <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+          {{item.title}}
+        </button>
+      </ng-template>
+    </ng-template>
+  </mat-menu>
+</ng-container>
+<ng-template ngFor let-menu [ngForOf]="subMenuList">
+  <mat-menu #menuRef>
+    <ng-template ngFor let-item [ngForOf]="menu.items">
+      <ng-container *ngIf="loaded">
+        <button mat-menu-item *ngIf="item.children; else elseBlock" [matMenuTriggerFor]="menuObj[item.title]">
+          <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+          {{item.title}}
+        </button>
+      </ng-container>
+      <ng-template #elseBlock>
+        <button mat-menu-item (click)="item.callback(event)">
+          <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+          {{item.title}}
+        </button>
+      </ng-template>
+    </ng-template>
+  </mat-menu>
+</ng-template>
