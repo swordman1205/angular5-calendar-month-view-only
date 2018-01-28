@@ -16,8 +16,7 @@
           [style.left]="14.28 * event.data.left + '%'"
           [style.top]="22 * event.data.top + 'px'"
           *ngFor="let event of rowData[i].content">
-          <sc-calendar-event-chip 
-            *ngIf="loaded"
+          <sc-calendar-event-chip
             [data]="event"
             (eventShown)="eventRender($event)"
             [contextMenu]="contextMenu"
@@ -43,5 +42,5 @@
 <sc-calendar-context-menu
   [event]="menuEvent?.raw"
   [content]="contextMenuContent"
-  (onLoadMenu)="onLoadMenu($event)">
+  (onLoadMenu)="contextMenu = $event">
 </sc-calendar-context-menu>

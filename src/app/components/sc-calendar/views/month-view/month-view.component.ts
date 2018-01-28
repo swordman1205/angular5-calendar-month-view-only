@@ -27,8 +27,6 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   hoverPopupEvent: any;
   menuEvent: any;
 
-  loaded: boolean = false;
-
   constructor() {}
 
   ngOnInit() {
@@ -214,10 +212,5 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   onMenuShown(event) {
     this.menuEvent = event;
-  }
-
-  onLoadMenu(menu) {
-    this.contextMenu = menu;
-    this.loaded = true; 
   }
 }

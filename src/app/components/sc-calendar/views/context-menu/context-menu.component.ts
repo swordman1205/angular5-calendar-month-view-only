@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatMenu } from '@angular/material';
 import { ContextMenuItemEntity, EventEntity } from '../../entities';
 
@@ -7,7 +7,7 @@ import { ContextMenuItemEntity, EventEntity } from '../../entities';
   templateUrl: './context-menu.component.html',
   styleUrls: ['./context-menu.component.scss']
 })
-export class SCCalendarContextMenuComponent implements OnInit, AfterViewInit {
+export class SCCalendarContextMenuComponent implements OnInit {
   @Input() content: ContextMenuItemEntity[] = [];
   @Input() event: EventEntity;
   @Output() onLoadMenu: EventEmitter<MatMenu> = new EventEmitter();
@@ -22,6 +22,8 @@ export class SCCalendarContextMenuComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit() {
+    this.onLoadMenu.emit(this.contextMenu);
+
     for (let i = 0; i < this.content.length; i++) {
       this.fetchSubMenuList(this.content[i]);
     }
@@ -31,12 +33,6 @@ export class SCCalendarContextMenuComponent implements OnInit, AfterViewInit {
         this.menuObj[this.subMenuList[index].name] = item;
       });
       this.loaded = true;
-    });
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.onLoadMenu.emit(this.contextMenu);
     });
   }
 
