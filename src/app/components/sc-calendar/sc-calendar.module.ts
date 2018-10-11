@@ -1,36 +1,17 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatMenuModule,
-  MatListModule
-} from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../../modules/shared.module';
 import { SCCalendarComponent } from './sc-calendar.component';
 import { 
   SCCalendarMonthViewComponent, 
   SCCalendarEventChipComponent, 
   SCCalendarContextMenuComponent,
-  SCCalendarHoverPopup,
+  SCCalendarHeaderComponent,
+  SCCalendarHoverPopupComponent,
   DayCellDirective, 
   ContextMenuTriggerDirective
 } from './views';
-import { SCCalendarHeaderComponent } from './header';
 
 import { PopoverModule } from './popover';
-
-const MaterialModules = [
-  MatButtonModule,
-  MatIconModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatMenuModule,
-  MatListModule
-];
 
 @NgModule({
   declarations: [
@@ -39,19 +20,18 @@ const MaterialModules = [
     SCCalendarHeaderComponent,
     SCCalendarEventChipComponent,
     SCCalendarContextMenuComponent,
-    SCCalendarHoverPopup,
+    SCCalendarHoverPopupComponent,
     DayCellDirective,
     ContextMenuTriggerDirective
   ],
   imports: [
-    FormsModule,
-    CommonModule,
-    ...MaterialModules,
-    FlexLayoutModule,
-    PopoverModule
+    PopoverModule,
+    SharedModule
   ],
   providers: [],
   exports: [
+    PopoverModule,
+    SCCalendarHoverPopupComponent,
     SCCalendarComponent
   ]
 })

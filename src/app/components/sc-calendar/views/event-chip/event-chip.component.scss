@@ -13,6 +13,9 @@ $white-color: #ffffff;
   letter-spacing: 1.5px;
   margin-left: 2px;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &.is-more {
     &:after {
       content: "";
@@ -26,17 +29,42 @@ $white-color: #ffffff;
     }
   }
   &.has-icon {
-    padding-right: 28px;
-    mat-icon {
+    padding-left: 20px;
+    > mat-icon {
       display: block;
       position: absolute;
-      right: 0px;
+      left: 0px;
       top: 1px;
       font-size: 18px;
     }
   }
-  mat-icon {
+  &.is-ellipsis-trigger:hover {
+    padding-right: 20px;
+    .btn-ellipsis-menu-trigger {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: block;
+      mat-icon {
+        font-size: 18px;
+        line-height: 1.2;
+        color: $white-color;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+        display: block;
+      }
+    }
+  }
+  .btn-ellipsis-menu-trigger {
     display: none;
+  }
+  > mat-icon {
+    display: none;
+    color: inherit;
   }
   .context-menu-trigger {
     position: absolute;

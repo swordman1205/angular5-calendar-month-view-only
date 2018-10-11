@@ -1,0 +1,16 @@
+<div class="header-bar p-16 p-sm-24">
+  <div class="header-inner-content h-100-p" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="header-top white-fg">
+      <ng-content></ng-content>
+    </div>
+    <div class="header-bottom white-fg" fxLayout="row" fxLayoutAlign="center center">
+      <button mat-icon-button (click)="dateChanged.next('prev')">
+        <mat-icon>navigate_before</mat-icon>
+      </button>
+      <h2 class="title font-weight-400 mx-16 my-0">{{title}} </h2>
+      <button mat-icon-button (click)="dateChanged.next('next')">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

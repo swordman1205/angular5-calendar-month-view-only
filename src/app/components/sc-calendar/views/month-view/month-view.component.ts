@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { MatMenu } from '@angular/material';
 
 @Component({
   selector: 'sc-calendar-month-view',
@@ -10,13 +11,22 @@ import * as _ from 'lodash';
 })
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
-  @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
+  @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
+
+  @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('monthView') monthView: any;
+  @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.updateCellHeight();
   }
 
+  menu: MatMenu;
+
+  activatedCell: ElementRef;
   contextMenuContent: ContextMenuItemEntity[];
 
   monthDays:any;
@@ -24,10 +34,15 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   positions:any;
   rowData:any;
 
-  hoverPopupEvent: any;
+  hoverPopupData: any;
+
   menuEvent: any;
 
-  constructor() {}
+  viewStartDate: any;
+  viewEndDate: any;
+
+  constructor(
+    private renderer: Renderer2) {}
 
   ngOnInit() {
     this.updateCellHeight();
@@ -39,14 +54,15 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       this.init();
     }
     if (changes.contextMenu) {
-      this.contextMenuContent = changes.contextMenu.currentValue;
+      this.contextMenuContent = changes.contextMenu.currentValue.data;
     }
   }
 
-  private init() {
+  private init(): void {
     this.initPositions();
     this.rowData = [];
     this.monthDays = this.getMonthDays(this.options.defaultDate);
+    this.updateMonthRange.next({ startDate: this.viewStartDate, endDate: this.viewEndDate });
     if (this.monthDays) {
       for (let i = 0; i < this.monthDays.length; i++) {
         const row = this.getRenderedEvents(this.monthDays[i][0].date, this.monthDays[i][6].date);
@@ -59,14 +75,14 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  private initPositions() {
+  private initPositions(): void {
     this.positions = [];
     for (let i = 0; i < 7; i++) {
       this.positions.push([]);
     }
   }
 
-  private updateCellHeight() {
+  private updateCellHeight(): void {
     this.cellHeight = this.monthView.nativeElement.clientWidth / 7;
   }
 
@@ -105,6 +121,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     for (let i = 0; i < monthDays.length; i++) {
       res[Math.floor(i / 7)].push(monthDays[i]);
     }
+    this.viewStartDate = monthDays[0].date.format('YYYY-MM-DD');
+    this.viewEndDate = monthDays[monthDays.length - 1].date.format('YYYY-MM-DD');
     return res;
   }
 
@@ -113,18 +131,18 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     if (!this.options.events) return tempEvents;
     for (let i = 0; i < this.options.events.length; i++) {
       const startAt = moment(this.options.events[i].start),
-            endAt = this.options.events[i].end? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
+            endAt = (this.options.events[i].end && moment(this.options.events[i].end).isValid())? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
       if ((startAt.isSameOrAfter(startDate, 'day') && startAt.isSameOrBefore(endDate, 'day')) || (startAt.isBefore(startDate) && endAt.isSameOrAfter(startDate))) {
-        const event = _.cloneDeep(this.options.events[i]);
+        const event: any = _.cloneDeep(this.options.events[i]);
         event.startedAt = startAt;
         event.endedAt = endAt;
-        event.days = event.endedAt.diff(event.startedAt, 'days') + 1;
+        event.days = moment(event.endedAt.format('YYYY-MM-DD')).diff(event.startedAt.format('YYYY-MM-DD'), 'days') + 1;
         const isBeyondStart = event.startedAt.isBefore(startDate, 'day');
         const isBeyondEnd = event.endedAt.isAfter(endDate, 'day');
         if (isBeyondStart || isBeyondEnd) {
           const start = isBeyondStart? startDate : event.startedAt;
           const end = isBeyondEnd? endDate : event.endedAt;
-          event.duration = end.diff(start, 'days') + 1;
+          event.duration = moment(end.format('YYYY-MM-DD')).diff(start.format('YYYY-MM-DD'), 'days') + 1;
           event.left = start.diff(startDate, 'days');
           event.isMore = isBeyondEnd;
         } else {
@@ -194,23 +212,68 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     return tempEvents;
   }
 
-  isToday(date) {
+  isToday(date): boolean {
     return moment().isSame(date, 'day');
   }
 
-  dayRender(day) {    
+  dayRender(day): void {    
     this.options.dayRender(day.date, day.cell);
   }
 
-  eventRender(data) {
+  eventRender(data): void {
     this.options.eventRender(data.event, data.element);
   }
 
-  onPopupShown(event) {
-    this.hoverPopupEvent = event;
+  async onPopupShown(event): Promise<any> {
+    if (!this.hoverPopupData) {
+      this.hoverPopupData = [
+        {
+          start: event.data.startedAt.format('h:mm a'),
+          end: event.data.endedAt.format('h:mm a')
+        }
+      ];
+    }
+    switch (event.raw.type) {
+      case 'u':
+        this.hoverPopupData = null;
+        break;
+      case 'g':
+        this.hoverPopupData = await this.hoverAsyncFn(event.raw.id, true);
+        break;
+      default:
+        this.hoverPopupData = [await this.hoverAsyncFn(event.raw.id)];
+        break;
+    }
   }
 
-  onMenuShown(event) {
+  onMenuShown(event): void {
     this.menuEvent = event;
+  }
+
+  checkActivation(event: any, Yindex: number): void {
+    const cellWidth = Math.floor(event.target.clientWidth / 7);
+    const xIndex = (event.offsetX % cellWidth > 0) ? Math.floor(event.offsetX / cellWidth) : Math.floor(event.offsetX / cellWidth) - 1;
+    const cell = this.dayCellList.toArray()[Yindex * 7 + xIndex];
+    if (cell !== this.activatedCell) {
+      if (this.activatedCell) {
+        this.renderer.removeClass(this.activatedCell.nativeElement, 'activated');
+      }
+      this.renderer.addClass(cell.nativeElement, 'activated');
+      this.activatedCell = cell;
+    }
+  }
+
+  clearActivation(event: any): void {
+    event.stopPropagation();
+    if (this.activatedCell) {
+      this.renderer.removeClass(this.activatedCell.nativeElement, 'activated');
+      this.activatedCell = null;
+    }
+  }
+
+  cellClick() {
+    if (this.activatedCell) {
+      this.activatedCell.nativeElement.click();
+    }
   }
 }

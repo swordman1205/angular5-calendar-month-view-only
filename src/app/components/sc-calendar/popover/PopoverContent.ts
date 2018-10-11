@@ -132,24 +132,24 @@ export class PopoverContent implements AfterViewInit, OnDestroy {
     let targetElHeight = targetEl.offsetHeight;
     this.effectivePlacement = pos0 = this.getEffectivePlacement(pos0, hostEl, targetEl);
     let shiftWidth: any = {
-      center: function(): number {
+      center: (): number => {
         return hostElPos.left + hostElPos.width / 2 - targetElWidth / 2;
       },
-      left: function(): number {
+      left: (): number => {
         return hostElPos.left;
       },
-      right: function(): number {
+      right: (): number => {
         return hostElPos.left + hostElPos.width;
       }
     };
     let shiftHeight: any = {
-      center: function(): number {
+      center: (): number => {
         return hostElPos.top + hostElPos.height / 2 - targetElHeight / 2;
       },
-      top: function(): number {
+      top: (): number => {
         return hostElPos.top;
       },
-      bottom: function(): number {
+      bottom: (): number => {
         return hostElPos.top + hostElPos.height;
       }
     };

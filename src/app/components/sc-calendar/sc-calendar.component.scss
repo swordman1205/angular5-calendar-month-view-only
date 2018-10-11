@@ -1,3 +1,29 @@
+.calendar-container {
+  position: relative;
+  .calendar-overlay {
+    position: absolute;
+    top: -14px;
+    height: calc(-113px + 100vh);
+    left: -14px;
+    right: -14px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    mat-progress-spinner {
+        width: 25px !important;
+        height: 25px !important;
+        margin-bottom: 20px;
+        svg {
+            width: 25px !important;
+            height: 25px !important;
+        }
+    }
+  }
+}
 .mat-menu-panel {
   button.mat-menu-item {
     font-size: 13px;
@@ -13,20 +39,5 @@
     margin: 0;
     border-top-width: 1px;
     border-top-style: solid;
-  }
-}
-.popover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1060;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: visibility 0.7s, opacity 0.7s, transform 0.7s;
-  &.show {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
   }
 }

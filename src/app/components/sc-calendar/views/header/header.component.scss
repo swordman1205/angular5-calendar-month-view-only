@@ -1,0 +1,54 @@
+@import "src/app/core/scss/fuse";
+
+.header-bar {
+  @include media-breakpoint('xs') {
+    margin: -1em 0;
+  }
+  @include media-breakpoint-up('xs') {
+    margin: -1em;
+  }
+  height: 200px;
+  position: relative;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  margin-bottom: 25px;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba(0,0,0,.45);
+  }
+  .header-top, .header-bottom {
+    z-index: 2;
+  }
+}
+:host {
+  &.Dec, &.Jan, &.Feb {
+    .header-bar {
+      background-position: 0 85%;
+      background-image: url(/assets/images/backgrounds/winter.jpg);
+    }
+  }
+  &.Mar, &.Apr, &.May {
+    .header-bar {
+      background-position: 0 40%;
+      background-image: url(/assets/images/backgrounds/spring.jpg);
+    }
+  }
+  &.Jun, &.Jul, &.Aug {
+    .header-bar {
+      background-position: 0 80%;
+      background-image: url(/assets/images/backgrounds/summer.jpg);
+    }
+  }
+  &.Sep, &.Oct, &.Nov {
+    .header-bar {
+      background-position: 0 40%;
+      background-image: url(/assets/images/backgrounds/autumn.jpg);
+    }
+  }
+}

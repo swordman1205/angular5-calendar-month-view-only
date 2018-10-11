@@ -2,15 +2,28 @@
   class="inner-data" 
   [class.is-more]="event.data.isMore"
   [class.has-icon]="!event.data.isMore && event.data.icon"
-  [style.backgroundColor]="event.data.backgroundColor"    
+  [class.is-ellipsis-trigger]="!isRightClick(triggerMode)"
+  [style.backgroundColor]="event.data.eventBackgroundColor"
+  [style.color]="event.data.eventTextColor"
+  [style.borderColor]="event.data.eventBorderColor"
   [popover]="hoverPopup"
   [popoverOnHover]="true"
   [popoverCloseOnMouseOutside]="true"
-  (onShown)="popupShown()">
+  (onShown)="popupShown()"
+  (click)="eventClicked.next({ event: event.raw, jsEvent: $event })">
   <div
+    *ngIf="isRightClick(triggerMode)"
     class="context-menu-trigger"
     [contextMenuTrigger]="contextMenu"
     (onContextMenuShown)="onContextMenuShown()"></div>
-  {{event.data.title}}
+  <span class="mr-8 font-weight-400">{{getTime(event.data.startedAt)}}</span>{{event.data.title}}
   <mat-icon>{{event.data.icon}}</mat-icon>
+  <button 
+    *ngIf="!isRightClick(triggerMode)"
+    mat-icon-button
+    class="btn-ellipsis-menu-trigger"
+    [matMenuTriggerFor]="contextMenu"
+    (click)="$event.stopPropagation(); onContextMenuShown()">
+    <mat-icon>more_vert</mat-icon>
+  </button>
 </mat-card>

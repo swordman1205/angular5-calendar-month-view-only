@@ -1,12 +1,22 @@
 <div class="calendar-container" #calendar fxLayout="column">
+  <div class="calendar-overlay" *ngIf="loading && ajax">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      Loading data...
+  </div>
   <sc-calendar-header
     [title]="title"
-    (dateChanged)="dateChanged($event)"></sc-calendar-header>
+    [month]="month"
+    (dateChanged)="dateChanged($event)">
+    <ng-content select="[calendar-header]"></ng-content>
+  </sc-calendar-header>
   <div class="content" [ngSwitch]="eventOptions.defaultView">
     <ng-container *ngSwitchCase="'month'">
       <sc-calendar-month-view 
         [options]="eventOptions"
-        [contextMenu]="contextMenu"></sc-calendar-month-view>
+        [contextMenu]="contextMenu"
+        [hoverAsyncFn]="hoverAsyncFn"
+        (updateMonthRange)="updateMonthRange($event)"></sc-calendar-month-view>
     </ng-container>
   </div>
+  <ng-content select="[calendar-footer]"></ng-content>
 </div>

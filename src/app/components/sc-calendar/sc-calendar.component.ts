@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, DoCheck, Renderer2, OnDestroy } from '@angular/core';
 import { EventOptionEntity, ContextMenuItemEntity } from './entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -9,14 +9,27 @@ import * as _ from 'lodash';
   styleUrls: ['./sc-calendar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SCCalendarComponent implements OnInit, DoCheck {
+export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
   @Input() options: EventOptionEntity;
-  @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
+  @Input() ajax: Boolean = false;
+
+  @Input('loading') set updateLoading(value: boolean) {
+    this.toggleLoader(value);
+  }
+
+  @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
+
+  @Output() optionChanged: EventEmitter<{startDate: string, endDate: string}> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;
+  dateRange: any;
 
-  constructor() {}
+  loading: boolean = false;
+
+  constructor(
+    private renderer: Renderer2) {}
 
   ngOnInit() {
     this.oldOptions = _.cloneDeep(this.options);
@@ -25,6 +38,14 @@ export class SCCalendarComponent implements OnInit, DoCheck {
       ...this.eventOptions,
       ...this.options
     };
+
+    if (this.ajax) {
+      setTimeout(() => this.loadAjaxEvents());
+    }
+  }
+
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'loading');
   }
 
   ngDoCheck() {
@@ -37,11 +58,15 @@ export class SCCalendarComponent implements OnInit, DoCheck {
     }
   }
 
-  get title() {
+  get title(): string {
     return moment(this.eventOptions.defaultDate).format(this.eventOptions.titleFormat);
   }
 
-  dateChanged(when) {
+  get month(): string {
+    return moment(this.eventOptions.defaultDate).format('MMM');
+  }
+
+  dateChanged(when): void {
     switch (when) {
       case 'prev':
         this.options.defaultDate = moment(this.eventOptions.defaultDate).subtract(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
@@ -49,9 +74,27 @@ export class SCCalendarComponent implements OnInit, DoCheck {
       case 'next':
         this.options.defaultDate = moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
         break;
-      case 'today':
-        this.options.defaultDate = moment().format('YYYY-MM-DD');
-        break;
+    }
+    if (this.ajax) {
+      setTimeout(() => this.loadAjaxEvents());
+    }
+  }
+
+  updateMonthRange(dateRange: any) {
+    this.dateRange = dateRange;
+  }
+
+  loadAjaxEvents() {
+    this.optionChanged.next(this.dateRange);
+  }
+
+  toggleLoader(show: boolean) {
+    if (show) {
+      this.renderer.addClass(document.body, 'loading');
+      this.loading = true;
+    } else {
+      this.renderer.removeClass(document.body, 'loading');
+      this.loading = false;
     }
   }
 }

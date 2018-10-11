@@ -13,4 +13,6 @@ export class EventOptionEntity {
   events?: EventEntity[] = [];
   dayRender?: (date: Moment, cell: Element) => void;
   eventRender?: (event: EventEntity, element: Element) => void;
+  dayClick?: (date: Moment, jsEvent: Event) => void;
+  eventClick?: (event: EventEntity, jsEvent: Event)  => void;
 }
